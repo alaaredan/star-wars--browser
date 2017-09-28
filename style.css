@@ -68,14 +68,33 @@ main {
   flex-grow: 2;
   overflow: auto;
 }
-.card {
+
+.cards {
   display: flex;
   flex-wrap: wrap;
+}
+
+
+nav {
+  margin: 0 auto;
+  width: 8rem;
+  display: flex;
+  justify-content: space-between;
+  padding: .5rem 0;
+}
+
+.previous {
+
+}
+
+.next {
+
 }
 
 body>footer {
   border-top: 1px solid #e8e770;
 }
+
 
 .person {
   width: calc(50% - 2rem);
@@ -101,10 +120,12 @@ body>footer {
 .person ul {
   padding: 0;
 }
+
 .person li {
   display: flex;
   padding: 0.2rem 0;
 }
+
 .person .label {
   flex-grow: 0;
   width: 30%;
