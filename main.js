@@ -4,6 +4,33 @@ var mainElement = document.querySelector('main');
 var renderers = {
 };
 
+function createPagerNav (data, renderList){
+  var navElement = document.createElement('nav');
+
+  if (data.previous != null) {
+    var previousElement = document.createElement('button');
+    previousElement.classList.add('previous');
+    previousElement.textContent = 'Previous';
+    navElement.appendChild(previousElement);
+    previousElement.addEventListener('click', function() {
+      loadData(data.previous, renderList)
+    });
+  }
+
+  if (data.next != null) {
+    var nextElement = document.createElement('button');
+    nextElement.textContent = 'Next';
+    nextElement.classList.add('previous');
+    navElement.appendChild(nextElement);
+    nextElement.addEventListener('click', function() {
+      loadData(data.next, renderList)
+    });
+  }
+
+return navElement;
+}
+
+
 function createModal() {
   var element = document.createElement('div');
   element.classList.add('modal');
@@ -54,129 +81,14 @@ function loadPlanet(url, done) {
 
 
 /////////////////////////////////////////////
-
-
-function renderFilms(films) {
-  mainElement.innerHTML = '';
-  console.log(films.previous);
-  console.log(films.next);
-  console.log(films.results);
-
-  var navElement = document.createElement('nav');
-
-
-  if (films.previous != null) {
-    var previousElement = document.createElement('button');
-    previousElement.classList.add('previous');
-    previousElement.textContent = 'Previous';
-    navElement.appendChild(previousElement);
-    previousElement.addEventListener('click', function() {
-      loadData(films.previous, renderFilms)
-    });
-  }
-
-  if (films.next != null) {
-    var nextElement = document.createElement('button');
-    nextElement.textContent = 'Next';
-    nextElement.classList.add('previous');
-    navElement.appendChild(nextElement);
-    nextElement.addEventListener('click', function() {
-      loadData(films.next, renderFilms)
-    });
-  }
-
-  var divElement = document.createElement('div');
-  divElement.classList.add('cards');
-  mainElement.appendChild(divElement);
-  mainElement.appendChild(navElement);
-
-  films.results.forEach(function(film) {
-    var sectionElement = document.createElement('section');
-    sectionElement.classList.add('person');
-
-
-
-    sectionElement.innerHTML = `
-    <header>
-      <h1>
-        ${film.title}
-
-      </h1>
-    </header>
-    <div>
-
-      <button>GIMME THE HOMEWORLD DIGGA</button>
-
-      <ul>
-        <li>
-          <span class="label">Director:</span>
-          <span class="value">${film.director}</span>
-        </li>
-        <li>
-          <span class="label">Producer:</span>
-          <span class="value">${film.producer}</span>
-        </li>
-        <li>
-          <span class="label">Skin Color:</span>
-          <span class="value">${person.skin_color}</span>
-        </li>
-        <li>
-          <span class="label">Hair Color:</span>
-          <span class="value">${person.hair_color}</span>
-        </li>
-        <li>
-          <span class="label">Height:</span>
-          <span class="value">${(person.height / 100).toFixed(2)}m</span>
-        </li>
-        <li>
-          <span class="label">Mass:</span>
-          <span class="value">${person.mass}kg</span>
-        </li>
-      </ul>
-    </div>
-    `;
-
-
-    sectionElement
-      .querySelector('button')
-      .addEventListener('click', function() {
-        loadPlanet(person.homeworld, renderPlanet);
-      });
-
-    divElement.appendChild(sectionElement);
-  });
-}
-
-renderers.films = renderFilms;
-/////////////////////////////////////////////7
+////////////////////////////////////////////
 function renderPeople(people) {
   mainElement.innerHTML = '';
   console.log(people.previous);
   console.log(people.next);
   console.log(people);
 
-  var navElement = document.createElement('nav');
-
-
-  if (people.previous != null) {
-    var previousElement = document.createElement('button');
-    previousElement.classList.add('previous');
-    previousElement.textContent = 'Previous';
-    navElement.appendChild(previousElement);
-    previousElement.addEventListener('click', function() {
-      loadData(people.previous, renderPeople)
-    });
-  }
-
-  if (people.next != null) {
-    var nextElement = document.createElement('button');
-    nextElement.textContent = 'Next';
-    nextElement.classList.add('previous');
-    navElement.appendChild(nextElement);
-    nextElement.addEventListener('click', function() {
-      loadData(people.next, renderPeople)
-    });
-  }
+  var navElement = createPagerNav(people, renderPeople);
 
   var divElement = document.createElement('div');
   divElement.classList.add('cards');
@@ -249,8 +161,136 @@ function renderPeople(people) {
     divElement.appendChild(sectionElement);
   });
 }
-
 renderers.people = renderPeople;
+/////////////////////////////////////////////
+/////////////////////////////////////////////
+function renderFilms(films) {
+  mainElement.innerHTML = '';
+  console.log(films.previous);
+  console.log(films.next);
+  console.log(films.results);
+
+  var navElement = createPagerNav(films, renderFilms);
+
+
+
+
+  var divElement = document.createElement('div');
+  divElement.classList.add('cards');
+  mainElement.appendChild(divElement);
+  mainElement.appendChild(navElement);
+
+  films.results.forEach(function(film) {
+    var sectionElement = document.createElement('section');
+    sectionElement.classList.add('person');
+
+
+
+    sectionElement.innerHTML = `
+    <header>
+      <h1>
+        ${film.title}
+
+      </h1>
+    </header>
+    <div>
+
+      <button>GIMME THE HOMEWORLD DIGGA</button>
+
+      <ul>
+        <li>
+          <span class="label">Director:</span>
+          <span class="value">${film.director}</span>
+        </li>
+        <li>
+          <span class="label">Producer:</span>
+          <span class="value">${film.producer}</span>
+        </li>
+        <li>
+          <span class="label">Opening Crawl:</span>
+          <span class="value">${film.opening_crawl}</span>
+        </li>
+      </ul>
+    </div>
+    `;
+
+
+    sectionElement
+      .querySelector('button')
+      .addEventListener('click', function() {
+        loadPlanet(person.homeworld, renderPlanet);
+      });
+
+    divElement.appendChild(sectionElement);
+  });
+}
+
+renderers.films = renderFilms;
+/////////////////////////////////////////////7
+function renderPlanets(planet) {
+  mainElement.innerHTML = '';
+  console.log(planet.previous);
+  console.log(planet.next);
+  console.log(planet);
+
+  var navElement = createPagerNav(planet, renderPlanet);
+
+  var divElement = document.createElement('div');
+  divElement.classList.add('cards');
+  mainElement.appendChild(divElement);
+  mainElement.appendChild(navElement);
+
+  planet.results.forEach(function(person) {
+    var sectionElement = document.createElement('section');
+    sectionElement.classList.add('person');
+
+
+
+    sectionElement.innerHTML = `
+    <header>
+      <h1>
+        ${person.name}
+
+      </h1>
+    </header>
+    <div>
+
+
+      <ul>
+        <li>
+          <span class="label">Birth Year:</span>
+          <span class="value">${person.birth_year}</span>
+        </li>
+        <li>
+          <span class="label">Eye Color:</span>
+          <span class="value">${person.eye_color}</span>
+        </li>
+        <li>
+          <span class="label">Skin Color:</span>
+          <span class="value">${person.skin_color}</span>
+        </li>
+        <li>
+          <span class="label">Hair Color:</span>
+          <span class="value">${person.hair_color}</span>
+        </li>
+        <li>
+          <span class="label">Height:</span>
+          <span class="value">${(person.height / 100).toFixed(2)}m</span>
+        </li>
+        <li>
+          <span class="label">Mass:</span>
+          <span class="value">${person.mass}kg</span>
+        </li>
+      </ul>
+    </div>
+    `;
+
+
+    divElement.appendChild(sectionElement);
+  });
+}
+
+renderers.planets = renderPlanets;
 /////////////////////////////////////////////////////////////////7
 function renderUnimplemented() {
   mainElement.textContent = '';
